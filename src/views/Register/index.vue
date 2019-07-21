@@ -5,7 +5,7 @@
             <div class="form-group">
                 <label class="label">姓名</label>
                 <div class="form-input">
-                    <input type="text" />
+                    <input type="text" v-model.trim="username" />
                 </div>
             </div>
             <div class="form-group">
@@ -17,29 +17,74 @@
             <div class="form-group">
                 <label class="label">密码</label>
                 <div class="form-input">
-                    <input type="password" />
+                    <input type="password" v-model.trim="password" @blur.prevent="inspectionPwd"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="label">重复密码</label>
                 <div class="form-input">
-                    <input type="password" placeholder="请再次输入密码进行确认" />
+                    <input type="password" v-model.trim="repeatPassword" placeholder="请再次输入密码进行确认" />
                 </div>
             </div>
             <div class="form-group">
                 <label class="label">职位</label>
                 <div class="form-input">
-                    <p><label><input type="radio" name="position"/>经理</label></p>
-                    <p><label><input type="radio" name="position"/>经理</label></p>
-                    <p><label><input type="radio" name="position"/>经理</label></p>
+                    <!--<label><input type="radio" name="position"/>经理</label>
+                    <label><input type="radio" name="position"/>经理</label>
+                    <label><input type="radio" name="position"/>经理</label>-->
+                    <RadioGroup v-model="position">
+                        <Radio label="manager">经理</Radio>
+                        <Radio label="sales">销售</Radio>
+                        <Radio label="sewing">普工</Radio>
+                    </RadioGroup>
                 </div>
             </div>
-            <button type="submit">注册</button>
+            <button @click="handlerAddUser">注册</button>
         </div>
     </div>
 </template>
 
-
+<script lang="ts">
+    import {Component, Vue} from 'vue-property-decorator';
+    import {RadioGroup, Radio, Icon } from 'iview';
+    @Component({
+        components: {
+            RadioGroup,
+            Radio,
+            Icon
+        }
+    })
+    export default class Index extends Vue {
+        private username:string = '';
+        private password:string = '';
+        private repeatPassword:string = '';
+        private position:string = '';
+        private async handlerAddUser() {
+            if (this.username === '' || this.password === '' || this.repeatPassword === '') {
+                this.$Message.error('请核对后重新输入');
+                this.password = '';
+                this.repeatPassword = '';
+                return
+            }
+            // 验证两次密码是否输入合法
+            const ok = await this.inspectionPwd();
+            if (!ok) {
+                this.$Message.error('密码不正确')
+            }
+            console.log(this.repeatPassword)
+        }
+        public inspectionPwd() {
+            if (this.repeatPassword === '' || this.password === '') {
+                this.$Message.error('请核对后重新输入');
+                return false
+            }
+            if (this.password !== this.repeatPassword) {
+                return false
+            }
+            return true
+        }
+    }
+</script>
 
 <style lang="scss" scoped>
     .container{width: 1200px;margin: 0 auto;}

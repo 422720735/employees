@@ -19,7 +19,7 @@
     import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
     import http from '../../utils/http'
     @Component
-    export default class HelloWorld extends Vue {
+    export default class Index extends Vue {
         //props
         @Prop() private msg!: string
         @Prop() private names!: string
