@@ -21,6 +21,12 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="label">重复密码</label>
+                <div class="form-input">
+                    <input type="password" placeholder="请再次输入密码进行确认" />
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="label">职位</label>
                 <div class="form-input">
                     <p><label><input type="radio" name="position"/>经理</label></p>
